@@ -17,7 +17,7 @@ class Lobby {
 		this.users.indexOf(id) !== -1;
 	}
 
-	enterLobby (id) {
+	enter (id) {
 
 		/*
 			This if statement ensures that the user is not already present in the lobby and the lobby
