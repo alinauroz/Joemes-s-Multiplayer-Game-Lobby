@@ -3,10 +3,33 @@
 */
 
 class Lobby {
-	constructor(code, max = 6) {
-		this.code = code;
+	constructor(max = 6, keySize = 6) {
+		this.code = generateKey(keySize);
 		this.max = max;
+		this.users = new Array();
 	}
+
+	isFull () {
+		return this.users.length >= this.max
+	}
+
+	isPresent (id) {
+		this.users.indexOf(id) !== -1;
+	}
+
+	enterLobby (id) {
+
+		/*
+			This if statement ensures that the user is not already present in the lobby and the lobby
+			is not full
+		*/
+
+		if (!(this.isFull() || this.isPresent(id))) {
+			this.users.push(id)
+		}
+
+	}
+	
 }
 
 /*
@@ -14,7 +37,7 @@ class Lobby {
 */
 
 const helper = {
-	generateKey(size = 6) {
+	generateKey : (size = 6) => {
 		let key = "";
 		let chars = "abcdefghijklmnopqrstuvwxyz0123456789";
 		for (i = 0; i < size; i++) {
@@ -22,6 +45,9 @@ const helper = {
 			key += chars[i_];
 		}
 		return key;
+	},
+	isUnique : (key) => {
+
 	}
 }
 
