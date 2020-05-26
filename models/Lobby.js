@@ -4,7 +4,7 @@
 
 class Lobby {
 	constructor(max = 6, keySize = 6) {
-		this.code = generateKey(keySize);
+		this.code = helper.generateKey(keySize);
 		this.max = max;
 		this.users = new Array();
 	}
@@ -29,7 +29,15 @@ class Lobby {
 		}
 
 	}
-	
+
+	leave (id) {
+		(this.users.indexOf(id) !== -1) ? this.users.splice(this.users.indexOf(id), 1) : "";
+	}
+
+	print () {
+		console.log(this.users)
+	}
+
 }
 
 /*
@@ -50,5 +58,6 @@ const helper = {
 
 	}
 }
+
 
 module.exports = Lobby;
