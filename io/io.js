@@ -26,7 +26,27 @@ module.exports = function (server) {
             }
         });
 
-        
+        socket.on("create_lobby", data => {
+            if (data.id) {
+                try {
+                    if (! users[data.id].lobby) {
+                        /*
+                            Create a lobby here
+                        */
+                    }
+                    else {
+                        socket.emit("create_lobby", {err : err['already_in_lobby']})
+                    }
+                }
+                catch (err) {
+                    socket.emit("create_lobby", {err : err['no_user']})
+                }
+
+            }
+            else {
+                socket.emit("create_lobby", {err : err['noid']})
+            }
+        });
 
     });
 }
