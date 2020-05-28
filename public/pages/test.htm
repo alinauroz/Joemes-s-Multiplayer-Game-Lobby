@@ -2,7 +2,48 @@
     <head>
         <script src = "./socket.io/socket.io.js"></script>
         <script>
+            
             socket = io.connect();
+            let id = 1;
+
+            window.onload = () => {
+                
+                let createLobby = document.getElementById("create_lobby");
+                let ready = document.getElementById("ready");
+
+                let lobbyCode = document.getElementById("lobby_code");
+                let joinLobby = document.getElementById("join_lobby");
+                let leaveLobby = document.getElementById("leave_lobby");
+
+                ready.onclick = () => {
+                    socket.emit("join", {id}, (err, msg) => {
+                        err ? console.error(err) : "";
+                        console.log(msg);
+                    })
+                }
+
+                createLobby.onclick = () => {
+                    socket.emit("create_lobby", {id}, (err, msg) => {
+                        if (err) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log(msg);
+                        }
+                    });
+                }
+
+            }
+
         </script>
     </head>
+    <body>
+        <div id = 'lobby'>
+            <button id = 'ready'>Ready</button>
+            <button id = 'create_lobby'>Create Lobby</button>
+            <input type = 'text' id = 'lobby_code' />
+            <button id = 'join_lobby'>Join Lobby</button>
+            <button id = 'leave_lobby'>Leave Lobby</button>
+        </div>
+    </body>
 </html>

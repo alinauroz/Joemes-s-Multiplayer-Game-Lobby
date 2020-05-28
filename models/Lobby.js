@@ -4,7 +4,7 @@
 
 class Lobby {
 	constructor(max = 6, keySize = 6) {
-		this.code = helper.generateKey(keySize);
+		this.code_ = helper.generateKey(keySize);
 		this.max = max;
 		this.users = new Array();
 	}
@@ -36,6 +36,13 @@ class Lobby {
 
 	print () {
 		console.log(this.users)
+	}
+
+	get code () {
+		return this.code_;
+	}
+	updateCode () {
+		this.code_ = helper.generateKey(keySize);
 	}
 
 }
