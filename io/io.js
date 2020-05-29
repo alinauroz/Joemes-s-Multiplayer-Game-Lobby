@@ -82,6 +82,7 @@ module.exports = function (server) {
             if (data.id) {
                 if (users[data.id] && users[data.id].lobby) {
                     users[data.id].lobby.leave(data.id);
+                    users[socket.id].lobby.emit("left", {id : socket.id});
                     delete users[data.id].lobby;
                 }
                 cb("", succ["lobby_left"]);
@@ -156,6 +157,20 @@ module.exports = function (server) {
             }
         });
 
+        socket.on("get_people", (data, cb) => {
+            if (data.id) {
+                if (users[data.id] && users[data.id].lobby) {
+                    cb("", users[data.id].lobby.users);
+                }
+                else {
+                    cb("not_a_member", err["not_a_member"]);
+                }
+            }
+            else {
+                cb("noid", err['noid']);
+            }
+        })
+
         socket.on("disconnect", () => {
             if (socket.id && users[socket.id]) {
                 if (users[socket.id].lobby) {
@@ -164,7 +179,7 @@ module.exports = function (server) {
                 }
                 delete users[socket.id];
             }
-        })
+        });
 
     });
 }

@@ -15,6 +15,18 @@
                 chat.scrollTop = chat.scrollHeight;
             }
 
+            const viewPeople = (people_, container) => {
+                let i = 0;
+                container.innerHTML = "";
+                people_.forEach(person => {
+                    console.log(person)
+                    container.innerHTML += `<div class = 'person' id = 'i${person}'>
+                            <img src = './img/demo/${i}.svg' width="200px">
+                        </div>`;
+                    i++;
+                })
+            }
+
             window.onload = () => {
                 
                 let createLobby = document.getElementById("create_lobby");
@@ -25,10 +37,22 @@
                 let getCode = document.getElementById("get_code");
                 let messageAll = document.getElementById("message_all");
                 let msgCon = document.getElementById("msgs-con");
+                let getPeople = document.getElementById("get_people");
                 let codeView = document.getElementById("lobby-code-view");
+                let peopleCon = document.getElementById("people");
 
                 let id = Math.floor(Math.random() * 100);
                 console.log("ID is", id);
+
+                getPeople.onclick = async () => {
+                    try {    
+                        let a = await $$$.people(id);
+                        console.log(a);
+                    }
+                    catch (err) {
+                        console.log(err);
+                    }
+                }
 
                 joinLobby.onclick = async () => {
                     try {
@@ -36,6 +60,8 @@
                         let a = await $$$.enter(id, code);
                         actionReport("", a, msgCon);
                         codeView.innerHTML = code;
+                        let people = await $$$.people(id);
+                        viewPeople(people, peopleCon);
                     }
                     catch (err) {
                         console.log(err)
@@ -71,6 +97,7 @@
                         let a = await $$$.leave(id);
                         actionReport("", "You have left the lobby " + a.code, msgCon);
                         codeView.innerHTML = "N/A";
+                        people.innerHTML = "";
                     }
                     catch (err) {
                         console.log(err)
@@ -185,6 +212,7 @@
             <button id = 'create_lobby'>Create Lobby</button>
             <input type='text' id = 'lobby_code' placeholder = 'Lobby Code' />
             <button id = 'join_lobby'>Join Lobby</button>
+            <button id = 'get_people'>Get People</button>
             <span id = 'lobby-code-note' class = 'text'> Your Lobby Code: <span id = 'lobby-code-view'>N/A</span></span>
             <button class = 'right' id = 'leave_lobby'>Leave Lobby</button>
         </div>

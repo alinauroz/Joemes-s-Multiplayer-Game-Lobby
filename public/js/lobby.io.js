@@ -59,4 +59,12 @@ const $$$ = {
         }
     }),
 
+    people : function (id) {
+        return new Promise((resolve, reject) => {
+            this.socket.emit("get_people", {id}, (err, msg) => {
+                err ? reject(err, msg) : resolve(msg);
+            });
+        });
+    },
+
 }
