@@ -17,5 +17,13 @@ const $$$ = {
         this.socket.emit("join", {id}, (err, msg) => {
             err ? reject({err, msg}) : resolve(msg);
         });
-    })
+    }),
+
+    enter : (id, code) => new Promise((resolve, reject) => {
+        this.socket.emit("join_lobby", {id, code}, (err, msg) => {
+            err ? reject({err, msg}) : resolve(msg);
+        })
+    }),
+
+    
 }
