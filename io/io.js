@@ -8,10 +8,16 @@ const err = {
     "already_present" : "You are already logged in from another window. Please close all other tabs or windows.",
     "no_user" : "This user is not registered",
     "already_in_lobby" : "This user is already a member of a lobby. Leave that lobby to join another",
+    "no_lobby" : "The code you sent does not match with any lobby",
+    "lobby_full" : "The lobby that you want to join is already full",
+    "not_a_member" : "This user is not a member of any lobby"
 }
 
 const succ = {
     "joined" : "You are ready to create and join and lobby",
+    "joined_lobby" : "You are now part of a lobby",
+    "lobby_left" : "You have left the lobby",
+
 }
 
 module.exports = function (server) {
@@ -84,38 +90,64 @@ module.exports = function (server) {
             }
         });
 
-        socket.on("join_lobby", data => {
+        socket.on("join_lobby", (data, cb) => {
+            data.id = String(data.id);
             if (data.id) {
                 try {
                     if (! users[data.id].lobby) {
-                        /*
-                            Join lobby here
-                        */
+                        
+                        if (data.code && lobbies[data.code]) {
+                            
+                            if (lobbies[data.code].enter(data.id)) {
+                                cb("", succ['joined_lobby']);
+                                users[data.id].lobby = lobbies[data.code];
+                                lobbies[data.code].emit("new_entry", "some one joined")
+                            }
+                            else {
+                                cb("lobby_full", err["lobby_full"]);
+                            }
+                        }
+                        else {
+                            cb("no_lobby", err['no_lobby'])
+                        }
+
                     }
                     else {
-                        socket.emit("create_lobby", {err : err['already_in_lobby']})
+                        cb("already_in_lobby", err['already_in_lobby'])
                     }
                 }
                 catch (err) {
-                    socket.emit("create_lobby", {err : err['no_user']})
+                    console.log(err);
+                    cb("no_user", err['no_user'])
                 }
 
             }
             else {
-                socket.emit("create_lobby", {err : err['noid']})
+                cb("noid", err['noid']);
             }
-        })
+        });
 
-        socket.on("test", (data, callback) => {
-            console.log(data);
-            callback("hello", "abc");
-        })
+        socket.on("code", (data, cb) => {
+            if (data.id) {
+                if (users[data.id] && users[data.id].lobby) {
+                    cb("", {code : users[data.id].lobby.code});
+                }
+                else {
+                    cb("not_a_member", err['not_a_member']);
+                }
+            }
+            else {
+                cb("noid", err['noid']);
+            }
+        });
+
+        
 
     });
 }
 
-Lobby.prototype.emit = (name, data) => {
-    this.users.map(user => {
-        console.log(user);
+Lobby.prototype.emit = function(name, data) {
+    this.users.map(id_ => {
+        users[id_].socket.emit(name, data);
     })
 }

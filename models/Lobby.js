@@ -25,8 +25,10 @@ class Lobby {
 		*/
 
 		if (!(this.isFull() || this.isPresent(id))) {
-			this.users.push(id)
+			this.users.push(id);
+			return true;
 		}
+		return false;
 
 	}
 

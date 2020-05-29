@@ -1,10 +1,13 @@
 <html>
     <head>
         <script src = "./socket.io/socket.io.js"></script>
+        <script src = "http://localhost:3000/js/lobby.io.js"></script>
+
         <script>
-            
-            socket = io.connect();
-            let id = 1;
+            //socket = io.connect();
+            socket = $$$.socket();
+            let id = Math.floor(Math.random() * 100);
+            console.log("ID is: " + id);
 
             window.onload = () => {
                 
@@ -14,6 +17,29 @@
                 let lobbyCode = document.getElementById("lobby_code");
                 let joinLobby = document.getElementById("join_lobby");
                 let leaveLobby = document.getElementById("leave_lobby");
+                let getCode = document.getElementById("get_code");
+
+                getCode.onclick = () => {
+                    socket.emit("code", {id}, (err, msg) => {
+                        err ? console.error(err) : "";
+                        console.log(msg);
+                    })
+                }
+
+                joinLobby.onclick = () => {
+                    alert(1);
+                    socket.emit("join_lobby", {id, code : lobbyCode.value}, (err, msg) => {
+                        err ? console.error(err) : "";
+                        console.log(msg);
+                    })
+                }
+
+                leaveLobby.onclick = () => {
+                    socket.emit("leave_lobby", {id}, (err, msg) => {
+                        err ? console.error(err) : "";
+                        console.log(msg);
+                    })
+                }
 
                 ready.onclick = () => {
                     socket.emit("join", {id}, (err, msg) => {
@@ -35,6 +61,10 @@
 
             }
 
+            socket.on("new_entry", data => {
+                alert(data);
+            });
+
         </script>
     </head>
     <body>
@@ -44,6 +74,7 @@
             <input type = 'text' id = 'lobby_code' />
             <button id = 'join_lobby'>Join Lobby</button>
             <button id = 'leave_lobby'>Leave Lobby</button>
+            <button id = 'get_code'>Get Code</button>
         </div>
     </body>
 </html>
