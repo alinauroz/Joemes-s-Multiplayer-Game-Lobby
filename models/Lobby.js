@@ -53,6 +53,7 @@ class Lobby {
 	Helper functions are used by Lobby Class
 */
 
+
 const helper = {
 	generateKey : (size = 6) => {
 		let key = "";

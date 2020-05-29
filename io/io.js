@@ -17,7 +17,7 @@ const succ = {
     "joined" : "You are ready to create and join and lobby",
     "joined_lobby" : "You are now part of a lobby",
     "lobby_left" : "You have left the lobby",
-
+    "informed_all" : "Sent this message to all the members of lobby",
 }
 
 module.exports = function (server) {
@@ -32,6 +32,7 @@ module.exports = function (server) {
                 }
                 else {
                     users[data.id] = new Object();
+                    socket.id = data.id;
                     users[data.id].socket = socket;
                     cb("", succ['joined']);
                 }
@@ -78,6 +79,7 @@ module.exports = function (server) {
         });
 
         socket.on("leave_lobby", (data, cb) => {
+            data.id = String(data.id);
             if (data.id) {
                 if (users[data.id] && users[data.id].lobby) {
                     users[data.id].lobby.leave(data.id);
@@ -141,7 +143,30 @@ module.exports = function (server) {
             }
         });
 
-        
+        socket.on("emit_lobby", (data, cb) => {
+            if (data.id, data.event) {
+                if (users[data.id] && users[data.id].lobby) {
+                    users[data.id].lobby.emit(data.event, data.data);
+                    cb("", succ['informed_all']);
+                }
+                else {
+                    cb("not_a_member", err['not_a_member']);
+                }
+            }
+            else {
+                cb("noid", err["noid"]);
+            }
+        });
+
+        socket.on("disconnect", () => {
+            if (socket.id && users[socket.id]) {
+                if (users[socket.id].lobby) {
+                    users[socket.id].lobby.emit("left", {id : socket.id});
+                    users[socket.id].lobby.leave(socket.id);
+                }
+                delete users[socket.id];
+            }
+        })
 
     });
 }
