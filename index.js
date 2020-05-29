@@ -12,4 +12,8 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/pages/test.htm");
 })
 
+app.get("/demo", (req, res) => {
+    res.sendFile(__dirname + "/public/pages/demo.htm");
+})
+
 //

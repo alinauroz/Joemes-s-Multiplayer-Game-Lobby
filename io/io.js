@@ -32,7 +32,7 @@ module.exports = function (server) {
                 }
                 else {
                     users[data.id] = new Object();
-                    socket.id = data.id;
+                    socket.id = String(data.id);
                     users[data.id].socket = socket;
                     cb("", succ['joined']);
                 }
@@ -59,7 +59,7 @@ module.exports = function (server) {
 
                         lobbies[id] = lobby;
                         users[data.id].lobby = lobbies[id];
-
+                        lobbies[id].emit("new_entry", {msg : "some one joined", index : lobbies[id].users.length -1, id : data.id})
                         cb("", {"code" : id});
 
                     }
@@ -68,7 +68,6 @@ module.exports = function (server) {
                     }
                 }
                 catch (err) {
-                    console.log(err);
                     cb("no_user", err['no_user'])
                 }
 
@@ -99,11 +98,10 @@ module.exports = function (server) {
                     if (! users[data.id].lobby) {
                         
                         if (data.code && lobbies[data.code]) {
-                            
                             if (lobbies[data.code].enter(data.id)) {
                                 cb("", succ['joined_lobby']);
                                 users[data.id].lobby = lobbies[data.code];
-                                lobbies[data.code].emit("new_entry", "some one joined")
+                                lobbies[data.code].emit("new_entry", {msg : "some one joined", index : lobbies[data.code].users.length -1, id : data.id})
                             }
                             else {
                                 cb("lobby_full", err["lobby_full"]);
@@ -170,6 +168,10 @@ module.exports = function (server) {
 
     });
 }
+
+process.on('uncaughtException', (err, msg) => {
+    console.log(err, msg)
+});
 
 Lobby.prototype.emit = function(name, data) {
     this.users.map(id_ => {

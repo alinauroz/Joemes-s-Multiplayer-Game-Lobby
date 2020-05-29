@@ -1,0 +1,206 @@
+<html>
+    <head>
+        <title>Demo of Lobby</title>
+        <script src = "./socket.io/socket.io.js"></script>
+        <script src = "./js/lobby.io.js"></script>
+        <script>
+
+            const errorReport = (title, msg, chat, container) => {
+                chat.innerHTML += `<p class = 'error-report'>${msg}</p>`;
+                chat.scrollTop = chat.scrollHeight;
+            }
+            
+            const actionReport = (title, msg, chat, container) => {
+                chat.innerHTML += `<p class = 'action-report'>${msg}</p>`;
+                chat.scrollTop = chat.scrollHeight;
+            }
+
+            window.onload = () => {
+                
+                let createLobby = document.getElementById("create_lobby");
+                let ready = document.getElementById("ready");
+                let lobbyCode = document.getElementById("lobby_code");
+                let joinLobby = document.getElementById("join_lobby");
+                let leaveLobby = document.getElementById("leave_lobby");
+                let getCode = document.getElementById("get_code");
+                let messageAll = document.getElementById("message_all");
+                let msgCon = document.getElementById("msgs-con");
+                let codeView = document.getElementById("lobby-code-view");
+
+                let id = Math.floor(Math.random() * 100);
+                console.log("ID is", id);
+
+                joinLobby.onclick = async () => {
+                    try {
+                        let code = lobbyCode.value;
+                        let a = await $$$.enter(id, code);
+                        actionReport("", a, msgCon);
+                        codeView.innerHTML = code;
+                    }
+                    catch (err) {
+                        console.log(err)
+                        errorReport("", err.msg, msgCon);
+                    }
+                }
+
+                ready.onclick = async () => {
+                    try {
+                        let a = await $$$.join(id);
+                        actionReport("", a, msgCon);
+                    }
+                    catch (err) {
+                        console.log(err);
+                        errorReport("", err.msg, msgCon);
+                    }
+                }
+
+                createLobby.onclick = async () => {
+                    try {
+                        let a = await $$$.create(id);
+                        actionReport("", "Lobby code is: " + a.code, msgCon);
+                        codeView.innerHTML = a.code;
+                    }
+                    catch (err) {
+                        console.log(err)
+                        errorReport("", err.msg, msgCon);
+                    }
+                }
+
+                leaveLobby.onclick = async () => {
+                    try {
+                        let a = await $$$.leave(id);
+                        actionReport("", "You have left the lobby " + a.code, msgCon);
+                        codeView.innerHTML = "N/A";
+                    }
+                    catch (err) {
+                        console.log(err)
+                        errorReport("", err.msg, msgCon);
+                    }
+                }
+
+                $$$.socket.on("new_entry", (data) => {
+                    actionReport("", data.msg, msgCon);
+                    document.getElementById("people").innerHTML += `
+                        <div class = 'person' id = 'i${data.id}'>
+                            <img src = './img/demo/${data.index}.svg' width="200px">
+                        </div>
+                    `
+                });
+
+                $$$.socket.on("left", (data) => {
+                    actionReport("", data.msg, msgCon);
+                    document.getElementById("i" + data.id).remove();
+                });
+
+            }
+        </script>
+        <style>
+            body {
+                font-family: monospace;
+            }
+            button, .button {
+                min-width : 20px;
+                height : 40px;
+                border : 2px solid #480692;
+                background: linear-gradient(10deg, #eee, #afe);
+                font-size : 14px;
+                font-weight : bold;
+                color : #480692;
+                cursor : pointer;
+                margin : 0px 5px;
+                font-family: monospace;
+            }
+            .action-report, .error-report {
+                text-align : center;
+                font-style: italic;
+                color : #666;
+                margin : 5px 5px;
+            }
+            .error-report {
+                color : #f7807f;
+            }
+            input[type=text], .inp-text {
+                width : 200px;
+                height : 40px;
+                border : 2px solid #480692;
+                background: linear-gradient(10deg, #eee, #afe);
+                font-size : 14px;
+                font-weight : bold;
+                color : #480692;
+                margin : 0px 5px;
+                padding-left : 10px;
+                padding-right : 5px;
+                font-family: monospace;
+            }
+            input:focus, button:focus {
+                outline : none;
+            }
+            .right {
+                float : right;
+            }
+            #people {
+                margin-top: 80px;
+                text-align: center;
+                display: inline-block;
+                max-width: calc(100% - 350px);
+                vertical-align: top;
+            }
+            .text {
+                color : #480692;
+                font-weight: bold;
+                font-size: 16px;
+            }
+            #chat {
+                width : 230px;
+                display: inline-block;
+                margin-top : 80px;
+            }
+            #msgs-con {
+                width : 100%;
+                height : 350px;
+                border : 2px solid #480692;
+                background: linear-gradient(10deg, #eee, #afe);
+                font-size : 14px;
+                font-weight : bold;
+                color : #480692;
+                padding-left : 10px;
+                font-family: monospace;
+                display: inline-block;
+                overflow : auto;
+            }
+
+            .person {
+                width : 200px;
+                display: inline-block;
+                vertical-align: top;
+            }
+
+
+
+        </style>
+    </head>
+    <body>
+        <div id = 'topbar'>
+            <button id='ready'>Join</button>
+            <button id = 'create_lobby'>Create Lobby</button>
+            <input type='text' id = 'lobby_code' placeholder = 'Lobby Code' />
+            <button id = 'join_lobby'>Join Lobby</button>
+            <span id = 'lobby-code-note' class = 'text'> Your Lobby Code: <span id = 'lobby-code-view'>N/A</span></span>
+            <button class = 'right' id = 'leave_lobby'>Leave Lobby</button>
+        </div>
+        <div id = 'container'>
+            <div id = 'chat'>
+                <div id = 'msgs-con'>
+
+                </div>
+                <div id = 'send-msg'>
+                    <input class = 'inp-text' type = 'text' style = 'width:186px;margin:0px -5px 0px 0px;'>
+                    <input type = 'button' value = '>' class='button' style='width:40px;margin:0px -5px 0px 0px;'>
+                </div>
+            </div>
+            <div id = 'people'>
+                
+            </div>
+        </div>
+    </body>
+</html>
