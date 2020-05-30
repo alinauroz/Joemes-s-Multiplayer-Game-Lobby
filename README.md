@@ -35,6 +35,7 @@ This is used to join the network. Note that network is different thing from libr
 This may seems uncecassary in our case. But it is necassary when there is automatic matching of players.
 
 __Response__
+
 In case of succes, you will get a text msg. In case of error you will get err as well as a message.
 
 __Example__
@@ -49,13 +50,21 @@ $$$.join(<id>).then(data => {
 ```
 
 __Demo__
+
 When clicked on _Join_ Button.
 ![Demo of Joining](https://raw.githubusercontent.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/master/public/gifs/join.gif?token=AJHWZO2TA7AKBYN52H2XTW262IR3M)
 
 ### $$$.create(id)
 
-This function is used to create lobby. 
+This function is used to create lobby. Pass user's id to it and it will return the lobby code in case of success. This lobby code then can be used to join this lobby by other users. Note that a user must have joined the network in order to create a lobby.
 
+__Response__
+An object containing code of the lobby; in case of succes. Otherwise, an object containing a error id and error message.
 
+![Demo of Create Lobby](https://raw.githubusercontent.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/master/public/gifs/create.gif?token=AJHWZOYGJ2264WEZ4ATIA7C62ISRE)
 
+### $$$.enter(id, code)
 
+If you have a code of a lobby that you want to join. Pass it to this function alongwith user's id. If joined successfully, a an event will occur on all the members of lobby. In case you will receive error such as _lobbyfull_ alongwith a message.
+
+![Demo of Enter Lobby](https://github.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/blob/master/public/gifs/enter.gif?raw=true)
