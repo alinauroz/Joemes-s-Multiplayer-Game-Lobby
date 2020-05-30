@@ -37,12 +37,12 @@ This may seems uncecassary in our case. But it is necassary when there is automa
 __Example__
 
 ```
-async (try{
-let res_ = await $$$.join(<id>)
-    console.log(res_)
-} catch(err) {
+//using Promise; async/await can also be used
+$$$.join(<id>).then(data => {
+    console.log(data)
+}).catch (err) {
     console.error(err)
-})()
+}
 ```
 
 
