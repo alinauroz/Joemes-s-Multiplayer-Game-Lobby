@@ -61,10 +61,22 @@ This function is used to create lobby. Pass user's id to it and it will return t
 __Response__
 An object containing code of the lobby; in case of succes. Otherwise, an object containing a error id and error message.
 
+__Demo__
+
 ![Demo of Create Lobby](https://github.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/blob/master/public/gifs/create.gif?raw=true)
 
 ### $$$.enter(id, code)
 
 If you have a code of a lobby that you want to join. Pass it to this function alongwith user's id. If joined successfully, a an event will occur on all the members of lobby. In case you will receive error such as _lobbyfull_ alongwith a message.
 
+__Demo__
+
 ![Demo of Enter Lobby](https://github.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/blob/master/public/gifs/enter.gif?raw=true)
+
+### $$$.leave(id)
+
+For leaving a lobby, pass user's id to this function. In case of succes, user will be removed from the lobby and all other lobby members will also get a notification.
+
+__Demo__
+
+![Demo of Leaving a Lobby](https://github.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/blob/master/public/gifs/leave.gif?raw=true)
