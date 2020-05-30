@@ -36,17 +36,14 @@ This may seems uncecassary in our case. But it is necassary when there is automa
 
 __Example__
 
-`async (try{`
-
-`let res_ = await $$$.join(<id>)` 
-
-`   console.log(res_)`
-
-`} catch(err) {`
-
-`   console.error(err)`
-
-`})()`
+```
+async (try{
+let res_ = await $$$.join(<id>)
+    console.log(res_)
+} catch(err) {
+    console.error(err)
+})()
+```
 
 
 
