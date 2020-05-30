@@ -79,4 +79,4 @@ For leaving a lobby, pass user's id to this function. In case of succes, user wi
 
 __Demo__
 
-![Demo of Leaving a Lobby](https://github.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/blob/master/public/gifs/leave.gif?raw=true)
+![Demo of Leaving a Lobby](https://github.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/blob/master/public/gifs/left.gif?raw=true)
