@@ -14,6 +14,7 @@ You can change the Lobby's Code Length and maximum numbers of player in the lobb
 
 First of all, include socket.io and lobby.io in your client side. Use the following code if your frontend is served from the same origin as the backend.
 
-`<script src = "./socket.io/socket.io.js">`
-`<script src = "./js/lobby.io.js">`
+`<script src = "./socket.io/socket.io.js"></script>`
+
+`<script src = "./js/lobby.io.js"></script>`
 
