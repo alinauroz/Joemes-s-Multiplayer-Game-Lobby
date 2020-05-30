@@ -61,7 +61,7 @@ This function is used to create lobby. Pass user's id to it and it will return t
 __Response__
 An object containing code of the lobby; in case of succes. Otherwise, an object containing a error id and error message.
 
-![Demo of Create Lobby](https://raw.githubusercontent.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/master/public/gifs/create.gif?raw=true)
+![Demo of Create Lobby](https://github.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/blob/master/public/gifs/create.gif?raw=true)
 
 ### $$$.enter(id, code)
 
