@@ -15,6 +15,11 @@
                 chat.scrollTop = chat.scrollHeight;
             }
 
+            const chatMessage = (title, msg, chat, container) => {
+                chat.innerHTML += `<p class = 'chat-message'><span class = 'chat-title'>${title}:</span>${msg}</p>`;
+                chat.scrollTop = chat.scrollHeight;
+            }
+
             const viewPeople = (people_, container) => {
                 let i = 0;
                 container.innerHTML = "";
@@ -40,6 +45,15 @@
                 let getPeople = document.getElementById("get_people");
                 let codeView = document.getElementById("lobby-code-view");
                 let peopleCon = document.getElementById("people");
+                let send = document.getElementById("send");
+                let msgBody = document.getElementById("msg-body");
+
+                send.onclick = () => {
+                    msgBody.value ?
+                    $$$.all("msg", {id, msg : msgBody.value})
+                    : "";
+                    msgBody.value = "";
+                }
 
                 let id = Math.floor(Math.random() * 100);
                 console.log("ID is", id);
@@ -119,6 +133,10 @@
                     document.getElementById("i" + data.id).remove();
                 });
 
+                $$$.socket.on("msg", (data) => {
+                    chatMessage(data.id, data.msg, msgCon);
+                });
+
             }
         </script>
         <style>
@@ -143,6 +161,16 @@
                 color : #666;
                 margin : 5px 5px;
             }
+
+            .chat-message {
+                color : #666;
+                margin : 5px 5px;
+            }
+
+            .chat-title {
+                color : #480692;
+            }
+
             .error-report {
                 color : #f7807f;
             }
@@ -222,8 +250,8 @@
 
                 </div>
                 <div id = 'send-msg'>
-                    <input class = 'inp-text' type = 'text' style = 'width:186px;margin:0px -5px 0px 0px;'>
-                    <input type = 'button' value = '>' class='button' style='width:40px;margin:0px -5px 0px 0px;'>
+                    <input class = 'inp-text' type = 'text' id = 'msg-body'style = 'width:186px;margin:0px -5px 0px 0px;'>
+                    <input type = 'button' value = '>' id = 'send' class='button' style='width:40px;margin:0px -5px 0px 0px;'>
                 </div>
             </div>
             <div id = 'people'>
