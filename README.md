@@ -34,6 +34,9 @@ LobbyClient _i-e lobby.io.js_ have different functions. These are defined to pro
 This is used to join the network. Note that network is different thing from library. A user must first join the network in order to create or join a lobby. If a user is not in network then an there will be a _Promise Rejection._
 This may seems uncecassary in our case. But it is necassary when there is automatic matching of players.
 
+__Response__
+In case of succes, you will get a text msg. In case of error you will get err as well as a message.
+
 __Example__
 
 ```
@@ -44,6 +47,14 @@ $$$.join(<id>).then(data => {
     console.error(err)
 }
 ```
+
+__Demo__
+When clicked on _Join_ Button.
+![Demo of Joining](https://raw.githubusercontent.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/master/public/gifs/join.gif?token=AJHWZO2TA7AKBYN52H2XTW262IR3M)
+
+### $$$.create(id)
+
+This function is used to create lobby. 
 
 
 
