@@ -52,7 +52,7 @@ $$$.join(<id>).then(data => {
 __Demo__
 
 When clicked on _Join_ Button.
-![Demo of Joining](https://raw.githubusercontent.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/master/public/gifs/join.gif?token=AJHWZO2TA7AKBYN52H2XTW262IR3M)
+![Demo of Joining](https://github.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/blob/master/public/gifs/join.gif?raw=true)
 
 ### $$$.create(id)
 
@@ -61,7 +61,7 @@ This function is used to create lobby. Pass user's id to it and it will return t
 __Response__
 An object containing code of the lobby; in case of succes. Otherwise, an object containing a error id and error message.
 
-![Demo of Create Lobby](https://raw.githubusercontent.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/master/public/gifs/create.gif?token=AJHWZOYGJ2264WEZ4ATIA7C62ISRE)
+![Demo of Create Lobby](https://raw.githubusercontent.com/alinauroz/Joemes-s-Multiplayer-Game-Lobby/master/public/gifs/create.gif?raw=true)
 
 ### $$$.enter(id, code)
 
